@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include <algorithm>
 
 class Achievement {
 private:
@@ -186,7 +187,7 @@ void AchievaApp::createAchievement(Game* game) {
     std::getline(std::cin, title);
     std::cout << "Enter achievement description: ";
     std::getline(std::cin, description);
-    std::cout << "Enter achievement score (with optional 'G'): ";
+    std::cout << "Enter achievement score: ";
     std::getline(std::cin, scoreStr);
 
     int score = parseScore(scoreStr);
@@ -198,24 +199,23 @@ void AchievaApp::createAchievement(Game* game) {
 }
 
 int parseScore(const std::string& scoreStr) {
-    // Check if the score string contains 'G' and extract the numeric part
-    size_t pos = scoreStr.find('G');
-    if (pos != std::string::npos) {
-        std::string numericPart = scoreStr.substr(0, pos);
-        if (!numericPart.empty()) {
-            for (char c : numericPart) {
-                if (!std::isdigit(c)) {
-                    std::cout << "Invalid score format. Using default score of 0.\n";
-                    return 0;
-                }
-            }
-            return std::stoi(numericPart);
+    try {
+        int score = std::stoi(scoreStr);
+
+        // Check if the score is a positive integer and in the 1-4 digit range
+        if (score > 0 && score < 10000) {
+            return score;
+        }
+        else {
+            std::cout << "Invalid score. Please enter a positive integer in the 1-4 digit range. Using default score of 0.\n";
+            return 0;
         }
     }
-
-    // If 'G' is not present or the format is invalid, use default score of 0
-    std::cout << "Invalid score format. Using default score of 0.\n";
-    return 0;
+    catch (const std::invalid_argument&) {
+        // If conversion to integer fails, use default score of 0
+        std::cout << "Invalid score format. Using default score of 0.\n";
+        return 0;
+    }
 }
 
 void AchievaApp::viewAllSettings() {
@@ -288,3 +288,4 @@ int main() {
 
     return 0;
 }
+

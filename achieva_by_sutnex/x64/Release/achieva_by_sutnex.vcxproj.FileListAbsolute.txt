@@ -1,1 +1,2 @@
 E:\Visual Studio 2022 Projects\Apps\achieva_by_sutnex\x64\Release\achieva_by_sutnex.exe
+C:\Users\cdeve\OneDrive\Desktop\achieva_by_sutnex\x64\Release\achieva_by_sutnex.exe
